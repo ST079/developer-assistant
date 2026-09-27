@@ -1,0 +1,21 @@
+# Logs
+n8n/*.log
+n8n/*.journal
+
+# Node modules
+n8n/nodes/node_modules/
+
+# Config files that may contain secrets
+n8n/config
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.env
+.env.*
+! .env.example  # keep example if needed
+
+# Docker
+docker-compose.override.yml

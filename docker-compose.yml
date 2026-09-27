@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    environment:
+      # --- n8n's own login (basic auth popup) ---
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=changeme123
+      - NODES_EXCLUDE=[]
+
+      # --- timezone, so scheduled triggers fire at the right local time ---
+      - GENERIC_TIMEZONE=Asia/Kathmandu
+      - TZ=Asia/Kathmandu
+
+      # --- how n8n identifies itself for webhook URLs ---
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+
+      # --- database: use your existing cnpg-18 Postgres, not a new one ---
+      - DB_TYPE=postgresdb
+      - DB_POSTGRESDB_HOST=host.docker.internal
+      - DB_POSTGRESDB_PORT=5432
+      - DB_POSTGRESDB_DATABASE=n8n_db
+      - DB_POSTGRESDB_USER=postgres
+      - DB_POSTGRESDB_PASSWORD=my_secret_password
+
+      - GIT_CONFIG_COUNT=1
+      - GIT_CONFIG_KEY_0=safe.directory
+      - GIT_CONFIG_VALUE_0=*
+    volumes:
+      - ./n8n:/home/node/.n8n
+      - C:/Users/suzan/OneDrive/Documents/VeelBackend:/repos:ro
